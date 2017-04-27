@@ -33,6 +33,18 @@ defmodule ICEDemo.XMPP.Client do
       video_file: "sintel.h264"
   end
 
+  @doc """
+  Starts XMPP client process which triggers RTP stream
+
+  Required options are:
+  * `:jid`
+  * `:password`
+  * `:host` - hostname of a XMPP server
+  * `:turn_addr` - address of a TURN server (ip:port format)
+  * `:turn_username` - username for a TURN server
+  * `:turn_secret` - secret for a TURN server:
+  * `:video_file` - path to a video file which will be streamed
+  """
   def start(opts) do
     Supervisor.start_child(ICEDemo.XMPP.Supervisor, [opts])
   end
