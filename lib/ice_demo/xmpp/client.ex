@@ -24,7 +24,7 @@ defmodule ICEDemo.XMPP.Client do
                    video_file: String.t}
 
   def start_test do
-    start_link jid: "streamer@erlang-solutions.com",
+    start jid: "streamer@erlang-solutions.com",
       password: "1234",
       host: "xmpp.erlang-solutions.com",
       turn_addr: "127.0.0.1:12100",
@@ -33,8 +33,12 @@ defmodule ICEDemo.XMPP.Client do
       video_file: "sintel.h264"
   end
 
+  def start(opts) do
+    Supervisor.start_child(ICEDemo.XMPP.Supervisor, [opts])
+  end
+
   def start_link(opts) do
-    GenServer.start_link(__MODULE__, opts, name: __MODULE__)
+    GenServer.start_link(__MODULE__, opts)
   end
 
   ## GenServer callbacks
@@ -101,7 +105,7 @@ defmodule ICEDemo.XMPP.Client do
   end
 
   defp start_video_stream(state, ip, port) do
-    ICEDemo.Stream.Static.start file: state[:video_file], ip: ip, port: port
+    {:ok, _} = ICEDemo.Stream.Static.start file: state[:video_file], ip: ip, port: port
   end
 
   defp parse_turn_address(addr) do

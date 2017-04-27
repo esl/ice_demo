@@ -16,12 +16,7 @@ defmodule ICEDemo.Stream.Static do
   * `:port` - target port number
   """
   def start(opts) do
-    import Supervisor.Spec, only: [worker: 3]
-
-    Supervisor.delete_child(ICEDemo.Supervisor, __MODULE__)
-
-    Supervisor.start_child(ICEDemo.Supervisor,
-      worker(GenServer, [__MODULE__, opts], restart: :transient, id: __MODULE__))
+    Supervisor.start_child(ICEDemo.Stream.Supervisor, [__MODULE__, opts])
   end
 
   ## GenServer callbacks
