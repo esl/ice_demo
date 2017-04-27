@@ -17,6 +17,7 @@ defmodule ICEDemo.Mixfile do
 
   defp deps do
     [{:porcelain, "~> 2.0"},
-     {:romeo, "~> 0.7"}]
+     {:romeo, "~> 0.7"},
+     {:jerboa, github: "esl/jerboa"}]
   end
 end
