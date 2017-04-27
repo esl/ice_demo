@@ -16,6 +16,6 @@ defmodule ICEDemo.Mixfile do
   end
 
   defp deps do
-    []
+    [{:porcelain, "~> 2.0"}]
   end
 end
