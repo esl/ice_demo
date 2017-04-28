@@ -22,17 +22,30 @@ defmodule ICEDemo.XMPP.Client do
                    turn_username: String.t,
                    turn_secret: String.t,
                    video_file: String.t,
+                   streamer: module,
                    streamer_pid: nil | pid,
                    streamer_ref: nil | reference}
 
-  def start_test do
+  def start_static do
     start jid: "streamer@erlang-solutions.com",
       password: "1234",
       host: "xmpp.erlang-solutions.com",
       turn_addr: "217.182.204.9:12100",
       turn_username: "streamer",
       turn_secret: "Zd5Pb2O2",
-      video_file: "sintel.h264"
+      video_file: "sintel.h264",
+      streamer: ICEDemo.Stream.Static
+  end
+
+  def start_pi do
+    start jid: "camera@erlang-solutions.com",
+      password: "1234",
+      host: "xmpp.erlang-solutions.com",
+      turn_addr: "217.182.204.9:12100",
+      turn_username: "streamer",
+      turn_secret: "Zd5Pb2O2",
+      video_file: "sintel.h264",
+      streamer: ICEDemo.Stream.Pi
   end
 
   @doc """
@@ -46,6 +59,7 @@ defmodule ICEDemo.XMPP.Client do
   * `:turn_username` - username for a TURN server
   * `:turn_secret` - secret for a TURN server:
   * `:video_file` - path to a video file which will be streamed
+  * `:streamer` - streamer module (ICEDemo.Stream.Pi or ICEDemo.Stream.Static)
   """
   def start(opts) do
     Supervisor.start_child(ICEDemo.XMPP.Supervisor, [opts])
@@ -75,7 +89,8 @@ defmodule ICEDemo.XMPP.Client do
               turn_secret: opts[:turn_secret],
               video_file: opts[:video_file],
               streamer_pid: nil,
-              streamer_ref: nil}
+              streamer_ref: nil,
+              streamer: opts[:streamer]}
     {:ok, state}
   end
 
@@ -163,7 +178,7 @@ defmodule ICEDemo.XMPP.Client do
     if state.streamer_pid do
       ICEDemo.Stream.Static.stop(state.streamer_pid)
     end
-    {:ok, pid} = ICEDemo.Stream.Static.start file: state[:video_file],
+    {:ok, pid} = state.streamer.start file: state[:video_file],
       ip: ip, port: port, control_port: control_port
     ref = Process.monitor(pid)
     %{state | streamer_pid: pid, streamer_ref: ref}
