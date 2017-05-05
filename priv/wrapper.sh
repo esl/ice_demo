@@ -1,5 +1,6 @@
 #!/bin/sh
-bash -c "$@" &
+
+bash -c "$@ &"
 pid=$!
 $(
   while read line ; do

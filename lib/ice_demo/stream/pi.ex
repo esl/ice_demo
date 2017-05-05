@@ -3,8 +3,7 @@ defmodule ICEDemo.Stream.Pi do
 
   require Logger
 
-  @wrapper :code.priv_dir(:ice_demo) |> Path.join("wrapper.sh")
-  @temp :code.priv_dir(:ice_demo) |> Path.join("temp")
+  @script :code.priv_dir(:ice_demo) |> Path.join("stream_pi.sh")
 
   ## API
 
@@ -53,17 +52,14 @@ defmodule ICEDemo.Stream.Pi do
   end
 
   def terminate(_, proc) do
-    ## TODO: handle proper termination of streaming process
     Porcelain.Process.stop proc
   end
 
   ## Internals
 
   defp start_stream(opts) do
-    Porcelain.spawn(@wrapper,
-      ["raspivid -t 0 -w 320 -h 240 -n -fps 24 -o - | " <>
-        "ffmpeg -re -i pipe:0 -map 0:0 -vcodec h264 -f rtp " <>
-        "rtp://#{opts[:ip]}:#{opts[:port]}?pkt_size=1300&rtcpport=#{opts[:control_port]}"],
+    Porcelain.spawn(@script,
+      [opts[:ip], opts[:port], opts[:control_port]],
       out: {:send, self()}, err: {:send, self()})
   end
 end

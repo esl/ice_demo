@@ -3,7 +3,7 @@ defmodule ICEDemo.Stream.Static do
 
   require Logger
 
-  @wrapper :code.priv_dir(:ice_demo) |> Path.join("wrapper.sh")
+  @script :code.priv_dir(:ice_demo) |> Path.join("stream_static.sh")
 
   ## API
 
@@ -60,11 +60,8 @@ defmodule ICEDemo.Stream.Static do
   ## Internals
 
   defp start_ffmpeg(opts) do
-    Porcelain.spawn(@wrapper,
-      ["ffmpeg", "-re",  "-i", opts[:file],
-       "-map", "0:0", "-vcodec", "h264",
-       "-f",  "rtp",
-       "rtp://#{opts[:ip]}:#{opts[:port]}?pkt_size=1300&rtcpport=#{opts[:control_port]}"],
+    Porcelain.spawn(@script,
+      [opts[:file], opts[:ip], opts[:port], opts[:control_port]],
       out: {:send, self()}, err: {:send, self()})
   end
 end
