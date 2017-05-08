@@ -26,6 +26,8 @@ defmodule ICEDemo.XMPP.Client do
                    streamer_pid: nil | pid,
                    streamer_ref: nil | reference}
 
+  @reconnect_interval 10_000
+
   def start_static do
     start jid: "movie@erlang-solutions.com",
       password: "1234",
@@ -73,10 +75,8 @@ defmodule ICEDemo.XMPP.Client do
 
   def init(opts) do
     start_opts = [jid: opts[:jid], password: opts[:password], host: opts[:host]]
-
-    {:ok, conn} = Conn.start_link(start_opts)
-    :ok = Conn.send(conn, Stanza.presence())
-    :ok = Conn.send(conn, Stanza.get_roster())
+    conn = init_conn(start_opts)
+    schedule_reconnect(start_opts)
 
     Logger.metadata tag: opts[:jid]
 
@@ -102,11 +102,28 @@ defmodule ICEDemo.XMPP.Client do
     new_state = %{state | streamer_pid: nil, streamer_ref: nil}
     {:noreply, new_state}
   end
+  def handle_info({:reconnect, start_opts}, state) do
+    Conn.close(state.conn)
+    new_conn = init_conn(start_opts)
+    schedule_reconnect(start_opts)
+    {:noreply, %{state | conn: new_conn}}
+  end
   def handle_info(_, state) do
     {:noreply, state}
   end
 
   ## Internals
+
+  defp init_conn(start_opts) do
+    {:ok, conn} = Conn.start_link(start_opts)
+    :ok = Conn.send(conn, Stanza.presence())
+    :ok = Conn.send(conn, Stanza.get_roster())
+    conn
+  end
+
+  defp schedule_reconnect(start_opts) do
+    Process.send_after self(), {:reconnect, start_opts}, @reconnect_interval
+  end
 
   defp handle_stanza(state, stanza) do
     with {:ok, ip, port, control_port} <- find_stream_target(state, stanza) do
