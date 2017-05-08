@@ -27,7 +27,7 @@ defmodule ICEDemo.XMPP.Client do
                    streamer_ref: nil | reference}
 
   def start_static do
-    start jid: "streamer@erlang-solutions.com",
+    start jid: "movie@erlang-solutions.com",
       password: "1234",
       host: "xmpp.erlang-solutions.com",
       turn_addr: "217.182.204.9:12100",
