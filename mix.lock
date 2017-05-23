@@ -1,6 +1,7 @@
-%{"connection": {:hex, :connection, "1.0.4", "a1cae72211f0eef17705aaededacac3eb30e6625b04a6117c1b2db6ace7d5976", [:mix], []},
-  "fast_xml": {:hex, :fast_xml, "1.1.22", "7eb81a738218541208fa3a126ee36197fb0346852d8c12ad678039e539e019df", [:rebar3], [{:p1_utils, "1.0.7", [hex: :p1_utils, optional: false]}]},
-  "jerboa": {:git, "https://github.com/esl/jerboa.git", "10ce9603b559193e3bf537924e96648e92b70a42", []},
-  "p1_utils": {:hex, :p1_utils, "1.0.7", "030adbce8935f1b87aaedfdb037d3127cc671ee3e1904b394e6dde9e449d6979", [:rebar3], []},
-  "porcelain": {:hex, :porcelain, "2.0.3", "2d77b17d1f21fed875b8c5ecba72a01533db2013bd2e5e62c6d286c029150fdc", [:mix], []},
-  "romeo": {:hex, :romeo, "0.7.0", "17e46830e49eff4d70e59147e808cd3f5f79912bb90a006afe5a8bb4355c29b3", [:mix], [{:connection, "~> 1.0", [hex: :connection, optional: false]}, {:fast_xml, "~> 1.1", [hex: :fast_xml, optional: false]}]}}
+%{"connection": {:hex, :connection, "1.0.4", "a1cae72211f0eef17705aaededacac3eb30e6625b04a6117c1b2db6ace7d5976", [:mix], [], "hexpm"},
+  "fast_xml": {:hex, :fast_xml, "1.1.22", "7eb81a738218541208fa3a126ee36197fb0346852d8c12ad678039e539e019df", [:rebar3], [{:p1_utils, "1.0.7", [hex: :p1_utils, repo: "hexpm", optional: false]}], "hexpm"},
+  "jerboa": {:hex, :jerboa, "0.2.0", "4954a741d9e99fdb3673805a80dc0e2c3a9c103349c7bc14919e8c9019816f10", [:mix], [], "hexpm"},
+  "optium": {:hex, :optium, "0.1.0", "784098f930580fd04bf40bc990d25bd1fd83b21a88a1d6f10098fb1e5db4769b", [:mix], [], "hexpm"},
+  "p1_utils": {:hex, :p1_utils, "1.0.7", "030adbce8935f1b87aaedfdb037d3127cc671ee3e1904b394e6dde9e449d6979", [:rebar3], [], "hexpm"},
+  "porcelain": {:hex, :porcelain, "2.0.3", "2d77b17d1f21fed875b8c5ecba72a01533db2013bd2e5e62c6d286c029150fdc", [:mix], [], "hexpm"},
+  "romeo": {:hex, :romeo, "0.7.0", "17e46830e49eff4d70e59147e808cd3f5f79912bb90a006afe5a8bb4355c29b3", [:mix], [{:connection, "~> 1.0", [hex: :connection, repo: "hexpm", optional: false]}, {:fast_xml, "~> 1.1", [hex: :fast_xml, repo: "hexpm", optional: false]}], "hexpm"}}

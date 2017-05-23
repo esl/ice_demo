@@ -28,28 +28,6 @@ defmodule ICEDemo.XMPP.Client do
 
   @reconnect_interval 10_000
 
-  def start_static do
-    start jid: "movie@erlang-solutions.com",
-      password: "1234",
-      host: "xmpp.erlang-solutions.com",
-      turn_addr: "217.182.204.9:12100",
-      turn_username: "streamer",
-      turn_secret: "Zd5Pb2O2",
-      video_file: "sintel.h264",
-      streamer: ICEDemo.Stream.Static
-  end
-
-  def start_pi do
-    start jid: "camera@erlang-solutions.com",
-      password: "1234",
-      host: "xmpp.erlang-solutions.com",
-      turn_addr: "217.182.204.9:12100",
-      turn_username: "streamer",
-      turn_secret: "Zd5Pb2O2",
-      video_file: "sintel.h264",
-      streamer: ICEDemo.Stream.Pi
-  end
-
   @doc """
   Starts XMPP client process which triggers RTP stream
 
